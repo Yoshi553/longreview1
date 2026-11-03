@@ -1,122 +1,157 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { heicTo } from "heic-to";
 
 function App() {
-  const [count, setCount] = useState(0)
+  // リピありレベル
+  const [rating, setRating] = useState(0);
 
+  // 選択した写真
+  const [photo, setPhoto] = useState(null);
+
+  // 投稿完了状態
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+// 写真を選択したときの処理
+const handlePhotoChange = async (event) => {
+  const file = event.target.files[0];
+
+  if (!file) return;
+
+  try {
+    let imageFile = file;
+
+    // HEIC・HEIF形式の場合
+    if (/\.(heic|heif)$/i.test(file.name)) {
+      imageFile = await heicTo({
+        blob: file,
+        type: "image/jpeg",
+        quality: 0.8,
+      });
+    }
+
+    setPhoto(URL.createObjectURL(imageFile));
+
+  } catch (error) {
+    console.error("画像の変換に失敗しました:", error);
+    alert("画像を読み込めませんでした。");
+  }
+};
+  // 投稿ボタンを押したときの処理
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setIsSubmitted(true);
+  };
+
+  // 投稿完了画面
+  if (isSubmitted) {
+    return (
+      <div className="app">
+        <div className="success-container">
+          <h1>投稿しました！</h1>
+          <p>レビューの投稿が完了しました。</p>
+
+          <button
+            className="post-button"
+            onClick={() => setIsSubmitted(false)}
+          >
+            戻る
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // 投稿作成画面
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="app">
+      <header className="header">
+        <h1>レビュー投稿</h1>
+      </header>
 
-      <div className="ticks"></div>
+      <main className="post-container">
+        <form onSubmit={handleSubmit}>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          {/* お店の名前 */}
+          <section className="form-section">
+            <h2>お店の名前</h2>
+            <input
+              type="text"
+              placeholder="お店の名前を入力してください"
+            />
+          </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+          {/* リピありレベル */}
+          <section className="form-section">
+            <h2>リピありレベル</h2>
+
+            <div className="rating">
+              {[1, 2, 3, 4, 5].map((num) => (
+                <button
+                  type="button"
+                  key={num}
+                  onClick={() => setRating(num)}
+                  style={{
+                    color: num <= rating ? "#ffc107" : "#ccc",
+                  }}
+                >
+                  ★
+                </button>
+              ))}
+            </div>
+          </section>
+
+          {/* 写真 */}
+          <section className="form-section">
+            <h2>写真</h2>
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handlePhotoChange}
+            />
+
+            {/* 選択した写真のプレビュー */}
+            {photo && (
+              <div className="photo-preview">
+                <img src={photo} alt="選択した写真" />
+              </div>
+            )}
+          </section>
+
+          {/* コメント */}
+          <section className="form-section">
+            <h2>コメント</h2>
+            <textarea
+              placeholder="お店の感想を入力してください"
+              rows="5"
+            />
+          </section>
+
+          {/* 投稿ボタン */}
+          <div className="button-area">
+            <button
+              type="button"
+              className="cancel-button"
+              onClick={() => {
+                setRating(0);
+                setPhoto(null);
+              }}
+            >
+              キャンセル
+            </button>
+
+            <button
+              type="submit"
+              className="post-button"
+            >
+              投稿する
+            </button>
+          </div>
+
+        </form>
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
