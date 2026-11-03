@@ -1,5 +1,8 @@
 import { useState } from "react";
+import Ver1 from "./components/Ver1.jsx";
+import Ver2 from "./components/Ver2.jsx";
 import Ver3 from "./components/Ver3.jsx";
+import Ver4 from "./components/Ver4.jsx";
 
 function App() {
   const [selectedPage, setSelectedPage] = useState(null);
@@ -33,9 +36,16 @@ function App() {
             ))}
           </div>
         </main>
+      ): selectedPage === 1 ? (
+        <Ver1 />
+      ): selectedPage === 2 ? (
+        <Ver2 />
       ) : selectedPage === 3 ? (
         <Ver3 />
-      ) : (
+      ): actedPage === 4 ? (
+        <Ver4 />
+      )
+      : (
         <main className="post-container">
           <h2>{pages[selectedPage - 1]}</h2>
           <p>この投稿画面はこれから作成します。</p>
