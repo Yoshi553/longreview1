@@ -119,7 +119,7 @@ const handlePhotoChange = async (event) => {
           <section className="form-section">
             <h2>コメント</h2>
             <textarea
-              placeholder="お店の感想を入力してください"
+              placeholder="みんなに感想を伝えましょう"
               rows="5"
             />
           </section>
