@@ -69,7 +69,7 @@ function Ver2({ onBack }) {
           {/* お店の名前 */}
           <section className="form-section">
             <h2>📍お店の名前</h2>
-            <input type="text" placeholder="お店の名前を入力してください" />
+            <input type="text" placeholder="みんなに感想を伝えましょう" />
           </section>
 
           {/* 写真 */}
