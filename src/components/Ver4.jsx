@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { heicTo } from "heic-to";
 
-
-
-function Ver4() {
-  // リピありレベル
-  const [rating, setRating] = useState(0);
+function Ver4({ onBack }) {
 
   // 選択した写真
   const [photo, setPhoto] = useState(null);
@@ -13,31 +9,30 @@ function Ver4() {
   // 投稿完了状態
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-// 写真を選択したときの処理
-const handlePhotoChange = async (event) => {
-  const file = event.target.files[0];
+  // 写真を選択したときの処理
+  const handlePhotoChange = async (event) => {
+    const file = event.target.files[0];
 
-  if (!file) return;
+    if (!file) return;
 
-  try {
-    let imageFile = file;
+    try {
+      let imageFile = file;
 
-    // HEIC・HEIF形式の場合
-    if (/\.(heic|heif)$/i.test(file.name)) {
-      imageFile = await heicTo({
-        blob: file,
-        type: "image/jpeg",
-        quality: 0.8,
-      });
+      // HEIC・HEIF形式の場合
+      if (/\.(heic|heif)$/i.test(file.name)) {
+        imageFile = await heicTo({
+          blob: file,
+          type: "image/jpeg",
+          quality: 0.8,
+        });
+      }
+
+      setPhoto(URL.createObjectURL(imageFile));
+    } catch (error) {
+      console.error("画像の変換に失敗しました:", error);
+      alert("画像を読み込めませんでした。");
     }
-
-    setPhoto(URL.createObjectURL(imageFile));
-
-  } catch (error) {
-    console.error("画像の変換に失敗しました:", error);
-    alert("画像を読み込めませんでした。");
-  }
-};
+  };
   // 投稿ボタンを押したときの処理
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -52,10 +47,7 @@ const handlePhotoChange = async (event) => {
           <h1>投稿しました！</h1>
           <p>レビューの投稿が完了しました。</p>
 
-          <button
-            className="post-button"
-            onClick={() => setIsSubmitted(false)}
-          >
+          <button className="post-button" onClick={() => setIsSubmitted(false)}>
             戻る
           </button>
         </div>
@@ -66,46 +58,34 @@ const handlePhotoChange = async (event) => {
   // 投稿作成画面
   return (
     <div className="app">
-
+      <button type="button" className="cancel-button" onClick={onBack}>
+        選択画面に戻る
+      </button>
 
       <main className="post-container">
         <form onSubmit={handleSubmit}>
-
           {/* お店の名前 */}
           <section className="form-section">
             <h2>📍お店の名前</h2>
-            <input
-              type="text"
-              placeholder="お店の名前"
-            />
+            <input type="text" placeholder="みんなに感想を伝えましょう" />
           </section>
 
           <section className="form-section">
-            <h3>💰値段</h3>
-            <input
-              type="text"
-              placeholder="値段"
-            />
-          </section>
-
-          <section className="form-section">
-            <h3>🍽️メニュー名</h3>
-            <input
-              type="text"
-              placeholder="メニュー名"
-            />
+            <h4>💰値段</h4>
+            <input type="text" placeholder="例: 1000円" />
           </section>
         
+        <section className="form-section">
+            <h4>🍳メニュー名</h4>
+            <input type="text" placeholder="例: チキンカレー" />
+          </section>
+          
 
           {/* 写真 */}
           <section className="form-section">
             <h2>写真</h2>
 
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handlePhotoChange}
-            />
+            <input type="file" accept="image/*" onChange={handlePhotoChange} />
 
             {/* 選択した写真のプレビュー */}
             {photo && (
@@ -118,10 +98,7 @@ const handlePhotoChange = async (event) => {
           {/* コメント */}
           <section className="form-section">
             <h2>コメント</h2>
-            <textarea
-              placeholder="みんなに感想を伝えましょう"
-              rows="5"
-            />
+            <textarea placeholder="お店の感想を入力してください" rows="5" />
           </section>
 
           {/* 投稿ボタン */}
@@ -137,14 +114,10 @@ const handlePhotoChange = async (event) => {
               キャンセル
             </button>
 
-            <button
-              type="submit"
-              className="post-button"
-            >
+            <button type="submit" className="post-button">
               投稿する
             </button>
           </div>
-
         </form>
       </main>
     </div>
