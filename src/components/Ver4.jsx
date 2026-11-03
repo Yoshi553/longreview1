@@ -66,41 +66,36 @@ const handlePhotoChange = async (event) => {
   // 投稿作成画面
   return (
     <div className="app">
-      <header className="header">
-        <h1>レビュー投稿</h1>
-      </header>
+
 
       <main className="post-container">
         <form onSubmit={handleSubmit}>
 
           {/* お店の名前 */}
           <section className="form-section">
-            <h2>お店の名前</h2>
+            <h2>📍お店の名前</h2>
             <input
               type="text"
-              placeholder="お店の名前を入力してください"
+              placeholder="お店の名前"
             />
           </section>
 
-          {/* リピありレベル */}
           <section className="form-section">
-            <h2>リピありレベル</h2>
-
-            <div className="rating">
-              {[1, 2, 3, 4, 5].map((num) => (
-                <button
-                  type="button"
-                  key={num}
-                  onClick={() => setRating(num)}
-                  style={{
-                    color: num <= rating ? "#ffc107" : "#ccc",
-                  }}
-                >
-                  ★
-                </button>
-              ))}
-            </div>
+            <h3>💰値段</h3>
+            <input
+              type="text"
+              placeholder="値段"
+            />
           </section>
+
+          <section className="form-section">
+            <h3>🍽️メニュー名</h3>
+            <input
+              type="text"
+              placeholder="メニュー名"
+            />
+          </section>
+        
 
           {/* 写真 */}
           <section className="form-section">

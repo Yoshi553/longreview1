@@ -14,12 +14,12 @@ function App() {
     "投稿画面④",
   ];
 
+  const handleBack = () => {
+    setSelectedPage(null);
+  };
+
   return (
     <div className="app">
-      <header className="header">
-        <h1>レビュー投稿</h1>
-      </header>
-
       {selectedPage === null ? (
         <main className="post-container">
           <h2>投稿画面を選択してください</h2>
@@ -36,28 +36,15 @@ function App() {
             ))}
           </div>
         </main>
-      ): selectedPage === 1 ? (
-        <Ver1 />
-      ): selectedPage === 2 ? (
-        <Ver2 />
+      ) : selectedPage === 1 ? (
+        <Ver1 onBack={handleBack}/>
+      ) : selectedPage === 2 ? (
+        <Ver2 onBack={handleBack} />
       ) : selectedPage === 3 ? (
-        <Ver3 />
-      ): actedPage === 4 ? (
-        <Ver4 />
-      )
-      : (
-        <main className="post-container">
-          <h2>{pages[selectedPage - 1]}</h2>
-          <p>この投稿画面はこれから作成します。</p>
-
-          <button
-            className="cancel-button"
-            onClick={() => setSelectedPage(null)}
-          >
-            戻る
-          </button>
-        </main>
-      )}
+        <Ver3 onBack={handleBack} />
+      ) : selectedPage === 4 ? (
+        <Ver4 onBack={handleBack} />
+      ) : null}
     </div>
   );
 }
