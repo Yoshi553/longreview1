@@ -69,7 +69,7 @@ function Ver2({ onBack }) {
           {/* お店の名前 */}
           <section className="form-section">
             <h2>📍お店の名前</h2>
-            <input type="text" placeholder="みんなに感想を伝えましょう" />
+            <input type="text" placeholder="店名" />
           </section>
 
           {/* 写真 */}
@@ -89,7 +89,7 @@ function Ver2({ onBack }) {
           {/* コメント */}
           <section className="form-section">
             <h2>コメント</h2>
-            <textarea placeholder="お店の感想を入力してください" rows="5" />
+            <textarea placeholder="みんなに感想を伝えましょう" rows="5" />
           </section>
 
           {/* 投稿ボタン */}
